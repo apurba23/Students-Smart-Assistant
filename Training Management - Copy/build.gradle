@@ -1,0 +1,54 @@
+import org.gradle.api.artifacts.*
+
+apply plugin: 'java'
+apply plugin: 'java-library-distribution'
+sourceCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+subprojects {
+    apply from: rootProject.file('common.gradle')
+}
+
+if (!hasProperty('mainClass')) {
+//    ext.mainClass = 'views/LoginForm'
+ext.mainClass = 'views/PerformanceForm'
+}
+
+repositories {
+    mavenCentral()
+    // You may define additional repositories, or even remove "mavenCentral()".
+    // Read more about repositories here:
+    //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:repositories
+}
+
+dependencies {
+    // TODO: Add dependencies here ...
+    // You can read more about how to add dependency here:
+    //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:how_to_declare_your_dependencies
+    testCompile group: 'junit', name: 'junit', version: '4.10'
+    compile "org.apache.poi:poi:3.17"
+    compile "org.apache.poi:poi-ooxml:3.17"
+    compile "org.slf4j:slf4j-api:1.6.1"
+    compile "org.slf4j:slf4j-simple:1.6.1"
+    compile group: 'com.toedter', name: 'jcalendar', version: '1.1.4'
+
+    implementation 'com.google.firebase:firebase-admin:5.11.0'
+  
+   compile 'com.fasterxml.jackson.core:jackson-core:2.7.3'
+compile 'com.fasterxml.jackson.core:jackson-annotations:2.7.3'
+compile 'com.fasterxml.jackson.core:jackson-databind:2.7.3'
+ compile 'com.github.bumptech.glide:glide:3.7.0'
+ compile group: 'jfree', name: 'jfreechart', version: '1.0.13'
+
+}
+jar {
+    // Keep jar clean:
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.MF'
+
+    manifest {
+//        attributes 'Main-Class': 'views/LoginForm',
+ attributes 'Main-Class': 'views/PerformanceForm',
+                'Class-Path': configurations.runtime.files.collect { "lib/$it.name" }.join(' ')
+    }
+
+}
